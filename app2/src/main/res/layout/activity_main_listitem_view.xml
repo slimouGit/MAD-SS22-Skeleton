@@ -42,7 +42,7 @@
             android:layout_gravity="center"
             android:checked="@={item.favourite}"
             android:focusable="false"
-            android:onClick="@{() -> controller.onFavouriteStatusChangedInListview(item)}"
+            android:onClick="@{() -> controller.onCheckedChangedInListview(item)}"
             android:visibility="visible" />
     </LinearLayout>
 </layout>

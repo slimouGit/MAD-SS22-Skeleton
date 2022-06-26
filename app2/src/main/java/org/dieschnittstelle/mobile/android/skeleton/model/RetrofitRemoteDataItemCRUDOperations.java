@@ -30,9 +30,6 @@ public class RetrofitRemoteDataItemCRUDOperations implements ToDoCRUDOperations{
 
         @DELETE("/api/todos/{todoId}")
         public Call<Boolean> deleteToDo(@Path("todoId") long id);
-
-        @DELETE("/api/todos")
-        public Call<Boolean> deleteAll();
     }
 
     private ToDoWebAPI toDoWebAPI;

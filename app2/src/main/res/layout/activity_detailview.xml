@@ -102,7 +102,7 @@
             android:text="Select a date"
             android:textColor="@android:color/white"
             tools:ignore="MissingConstraints"
-            app:layout_constraintTop_toBottomOf="@+id/tvSelectedDate"/>
+            app:layout_constraintTop_toBottomOf="@+id/itemDescriptionWrapper"/>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -273,8 +273,7 @@ public class DetailViewActivity extends AppCompatActivity implements DetailViewM
     }
 
     private void saveDate(LocalDate date) {
-        this.item.setExpiry(date);
-        this.crudOperations.updateToDo(this.item);
+        this.item.setExpiry("Datum");
         Log.i(LOGGER,"Date");
     }
 }

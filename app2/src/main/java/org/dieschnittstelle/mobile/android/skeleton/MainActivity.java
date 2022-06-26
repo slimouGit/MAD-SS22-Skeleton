@@ -230,14 +230,4 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
     }
-
-    public void onFavouriteStatusChangedInListview(ToDo item) {
-        this.operationRunner.run(
-                () -> crudOperations.updateToDo(item),
-                updateditem -> {
-                    onDataItemUpdated(updateditem);
-                    showMessage("favourite status changed " + updateditem.getName());
-                }
-        );
-    }
 }

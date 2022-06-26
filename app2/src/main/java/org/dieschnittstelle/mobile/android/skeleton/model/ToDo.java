@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -24,7 +23,7 @@ public class ToDo implements Serializable {
     private boolean favourite;
 
     @SerializedName("expiry")
-    private LocalDate expiry;
+    private String expiry;
 
 
     public ToDo() {
@@ -87,11 +86,11 @@ public class ToDo implements Serializable {
         this.favourite = favourite;
     }
 
-    public LocalDate getExpiry() {
+    public String getExpiry() {
         return expiry;
     }
 
-    public void setExpiry(LocalDate expiry) {
+    public void setExpiry(String expiry) {
         this.expiry = expiry;
     }
 }
