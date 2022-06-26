@@ -1,33 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="item"
             type="org.dieschnittstelle.mobile.android.skeleton.model.ToDo" />
+
         <variable
             name="controller"
             type="org.dieschnittstelle.mobile.android.skeleton.MainActivity" />
     </data>
-<LinearLayout
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <CheckBox
-        android:focusable="false"
-        android:checked="@={item.checked}"
-        android:onClick="@{() -> controller.onCheckedChangedInListview(item)}"
-        android:layout_gravity="center_vertical"
-        android:id="@+id/itemChecked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/itemName"
-        android:text="@{item.name}"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textSize="30sp"
-    android:padding="10dp">
-</TextView>
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/itemChecked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:checked="@={item.checked}"
+            android:focusable="false"
+            android:onClick="@{() -> controller.onCheckedChangedInListview(item)}" />
+
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@{item.name}"
+            android:textSize="30sp"></TextView>
+
+        <CheckBox
+            android:id="@+id/itemFavourite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="@={item.favourite}"
+            android:focusable="false"
+            android:onClick="@{() -> controller.onFavouriteStatusChangedInListview(item)}"
+            android:visibility="visible" />
+    </LinearLayout>
 </layout>

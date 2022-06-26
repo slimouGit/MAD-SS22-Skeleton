@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private MADAsyncOperationRunner operationRunner;
     private Comparator<ToDo> currentComparator = NAME_COMPARATOR;
     private RoomLocalTodoCRUDOperations localTodoCRUDOperations;
-
+    public static String ARG_ITEM_ID = "itemId";
 
     private ActivityResultLauncher<Intent> detailviewActivityLauncher;
 
@@ -227,6 +227,16 @@ public class MainActivity extends AppCompatActivity {
                 updateditem -> {
                     onDataItemUpdated(updateditem);
                     showMessage("checked changed " + updateditem.getName());
+                }
+        );
+    }
+
+    public void onFavouriteStatusChangedInListview(ToDo item) {
+        this.operationRunner.run(
+                () -> crudOperations.updateToDo(item),
+                updateditem -> {
+                    onDataItemUpdated(updateditem);
+                    showMessage("favourite status changed " + updateditem.getName());
                 }
         );
     }

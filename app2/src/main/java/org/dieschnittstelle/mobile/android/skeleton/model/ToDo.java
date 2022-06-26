@@ -1,11 +1,14 @@
 package org.dieschnittstelle.mobile.android.skeleton.model;
 
+import android.widget.TextView;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +20,12 @@ public class ToDo implements Serializable {
     private String description;
     @SerializedName("done")
     private boolean checked;
+    @SerializedName("favourite")
+    private boolean favourite;
+
+    @SerializedName("expiry")
+    private LocalDate expiry;
+
 
     public ToDo() {
     }
@@ -38,15 +47,13 @@ public class ToDo implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ToDo toDo = (ToDo) o;
-        return id == toDo.id && checked == toDo.checked && Objects.equals(name, toDo.name) && Objects.equals(description, toDo.description);
+        return id == toDo.id && checked == toDo.checked && favourite == toDo.favourite && Objects.equals(name, toDo.name) && Objects.equals(description, toDo.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, checked);
+        return Objects.hash(id, name, description, checked, favourite);
     }
-
-
 
     public String getName() {
         return name;
@@ -72,5 +79,19 @@ public class ToDo implements Serializable {
         this.checked = checked;
     }
 
+    public boolean isFavourite() {
+        return favourite;
+    }
 
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public LocalDate getExpiry() {
+        return expiry;
+    }
+
+    public void setExpiry(LocalDate expiry) {
+        this.expiry = expiry;
+    }
 }

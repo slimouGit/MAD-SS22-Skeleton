@@ -5,6 +5,7 @@ import static org.dieschnittstelle.mobile.android.skeleton.MainActivity.LOGGER;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -16,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,9 +30,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import org.dieschnittstelle.mobile.android.skeleton.databinding.ActivityDetailviewBindingImpl;
+import org.dieschnittstelle.mobile.android.skeleton.model.RoomLocalTodoCRUDOperations;
 import org.dieschnittstelle.mobile.android.skeleton.model.ToDo;
 import org.dieschnittstelle.mobile.android.skeleton.model.ToDoCRUDOperations;
 import org.dieschnittstelle.mobile.android.skeleton.util.MADAsyncOperationRunner;
+
+import java.time.LocalDate;
+import java.util.Calendar;
 
 public class DetailViewActivity extends AppCompatActivity implements DetailViewModel {
     public static String ARG_ITEM_ID = "itemId";
@@ -40,10 +48,21 @@ public class DetailViewActivity extends AppCompatActivity implements DetailViewM
     private ActivityDetailviewBindingImpl binding;
     private MADAsyncOperationRunner operationRunner;
     private ToDoCRUDOperations crudOperations;
+    private RoomLocalTodoCRUDOperations localCrudOperations;
     private ActivityResultLauncher<Intent> selectContactLauncher;
+    TextView date;
+    DatePickerDialog datePickerDialog;
+    int year;
+    int month;
+    int dayOfMonth;
+    Calendar calendar;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Button selectDate = findViewById(R.id.btnDate);
+        date = findViewById(R.id.tvSelectedDate);
+
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_detailview);
 
@@ -94,9 +113,24 @@ public class DetailViewActivity extends AppCompatActivity implements DetailViewM
                     this.item = item;
                     returnIntent.putExtra(ARG_ITEM_ID, this.item.getId());
                     setResult(resultCode, returnIntent);
+
                     finish();
                 }
         );
+    }
+
+    public void onDeleteItem() {
+        Log.i(LOGGER, "deleted item");
+        Intent returnIntent = new Intent();
+
+        localCrudOperations.deleteToDo(item.getId());
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        mainActivity.putExtra(MainActivity.ARG_ITEM_ID, item.getId());
+
+        startActivity(mainActivity);
+//        detailviewActivityLauncher.launch(detailviewIntent);
+
+
     }
 
     @Override
@@ -215,8 +249,32 @@ public class DetailViewActivity extends AppCompatActivity implements DetailViewM
         );
         while (cursor.moveToNext()) {
             @SuppressLint("Range") String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            @SuppressLint("Range")  int phoneNumberType = cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+            @SuppressLint("Range") int phoneNumberType = cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
             Log.i(LOGGER, "got Number " + number + " of type " + (phoneNumberType == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE ? "mobile" : "not mobil"));
         }
+    }
+
+    public void onShowDatePicker() {
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(DetailViewActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @SuppressLint("NewApi")
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        LocalDate date = LocalDate.of(year,month,day);
+                        saveDate(date);
+                    }
+                }, year, month, dayOfMonth);
+        datePickerDialog.show();
+    }
+
+    private void saveDate(LocalDate date) {
+        this.item.setExpiry(date);
+        this.crudOperations.updateToDo(this.item);
+        Log.i(LOGGER,"Date");
     }
 }

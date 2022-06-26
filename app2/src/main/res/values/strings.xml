@@ -5,4 +5,6 @@
     <string name="name">Name</string>
     <string name="description">Description</string>
     <string name="checked">checked?</string>
+    <string name="favourite">favourite?</string>
+    <string name="delete">delete</string>
 </resources>
